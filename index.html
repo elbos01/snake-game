@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,9 +7,18 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>🐍 Snake Game</h1>
-    <canvas id="gameCanvas"></canvas>
-    <p>🥚 Œufs mangés : <span id="score">0</span></p>
+    <canvas id="gameCanvas" width="400" height="400"></canvas>
+
+    <div class="controls">
+        <div class="row">
+            <button class="btn" id="up">⬆️</button>
+        </div>
+        <div class="row">
+            <button class="btn" id="left">⬅️</button>
+            <button class="btn" id="down">⬇️</button>
+            <button class="btn" id="right">➡️</button>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
