@@ -64,10 +64,12 @@ function draw() {
 
 setInterval(draw, 100);
 
-// Ajouter des événements pour agrandir les boutons
+// Style des boutons de contrôle
 const controlButtons = document.querySelectorAll('.control-button');
 controlButtons.forEach(button => {
-    button.style.width = '60px';
-    button.style.height = '60px';
-    button.style.margin = '10px';
+    button.style.width = '70px';
+    button.style.height = '70px';
+    button.style.margin = '15px';
+    button.style.fontSize = '24px';
+    button.style.borderRadius = '15px';
 });
