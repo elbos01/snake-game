@@ -16,12 +16,16 @@ body {
 }
 
 #controls {
-    display: grid;
-    grid-template-columns: 70px 70px 70px;
-    grid-template-rows: 70px 70px 70px;
-    gap: 10px;
-    justify-content: center;
+    display: flex;
+    flex-direction: column;
     align-items: center;
+    gap: 10px;
+}
+
+.control-row {
+    display: flex;
+    justify-content: center;
+    width: 100%;
 }
 
 .control-button {
@@ -47,6 +51,7 @@ body {
     background-color: #3e8e41;
 }
 
-#empty1, #empty2, #empty3, #empty4 {
-    visibility: hidden;
+.empty-space {
+    width: 70px; /* même largeur que les boutons */
+    height: 70px;
 }

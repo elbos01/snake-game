@@ -16,10 +16,10 @@ document.addEventListener("keydown", (e) => {
     handleDirectionChange(e.key);
 });
 
-document.getElementById("up").addEventListener("click", () => handleDirectionChange("z"));
-document.getElementById("down").addEventListener("click", () => handleDirectionChange("s"));
-document.getElementById("left").addEventListener("click", () => handleDirectionChange("q"));
-document.getElementById("right").addEventListener("click", () => handleDirectionChange("d"));
+document.getElementById("up").addEventListener("click", () => handleDirectionChange("ArrowUp"));
+document.getElementById("down").addEventListener("click", () => handleDirectionChange("ArrowDown"));
+document.getElementById("left").addEventListener("click", () => handleDirectionChange("ArrowLeft"));
+document.getElementById("right").addEventListener("click", () => handleDirectionChange("ArrowRight"));
 
 function handleDirectionChange(key) {
     if ((key === "ArrowUp" || key === "z") && direction !== "down") direction = "up";
@@ -62,14 +62,4 @@ function draw() {
     }
 }
 
-setInterval(draw, 150); // Vitesse réduite du snake
-
-// Style des boutons de contrôle
-const controlButtons = document.querySelectorAll('.control-button');
-controlButtons.forEach(button => {
-    button.style.width = '70px';
-    button.style.height = '70px';
-    button.style.margin = '15px';
-    button.style.fontSize = '24px';
-    button.style.borderRadius = '15px';
-});
+setInterval(draw, 150);
