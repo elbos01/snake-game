@@ -12,7 +12,7 @@ let food = generateFood();
 let score = 0;
 let gameInterval = null;
 let gameRunning = false;
-const maxFoods = 10; // Le snake s'arrête après 10 nourritures
+const maxFoods = 10; // Le jeu s'arrête après que le snake a mangé 10 nourritures
 
 function generateFood() {
     return {
@@ -22,7 +22,7 @@ function generateFood() {
 }
 
 // Gestion des touches (clavier et boutons)
-// Ici, on utilise z,s,q,d pour le clavier azerty ainsi que les flèches standards
+// Ici, on utilise z,s,q,d pour le clavier azerty ainsi que les flèches standards.
 function handleDirectionChange(key) {
     if ((key === "ArrowUp" || key === "z") && direction !== "down") direction = "up";
     if ((key === "ArrowDown" || key === "s") && direction !== "up") direction = "down";
@@ -66,10 +66,7 @@ function draw() {
 
     // Vérifier auto-collision (sans collision murale grâce au wrap-around)
     if (snake.some((part, index) => index !== 0 && part.x === head.x && part.y === head.y)) {
-        clearInterval(gameInterval);
-        gameRunning = false;
-        alert("Game Over! Score: " + score);
-        startButton.style.display = "block";
+        endGame("Game Over! Score: " + score);
         return;
     }
 
@@ -82,11 +79,7 @@ function draw() {
         food = generateFood();
         // Si le snake a mangé 10 nourritures, arrêter le jeu
         if (score >= maxFoods) {
-            clearInterval(gameInterval);
-            gameRunning = false;
-            alert("Snake is full, come tomorrow!");
-            startButton.style.display = "block";
-            // Ici, vous pouvez envoyer le score à Telegram pour convertir en dollars.
+            endGame("Snake is full, come tomorrow!");
             return;
         }
     } else {
@@ -95,7 +88,7 @@ function draw() {
 }
 
 function startGame() {
-    // Réinitialisation du jeu
+    // Réinitialiser l'état du jeu
     snake = [{ x: 200, y: 200 }];
     direction = "right";
     food = generateFood();
@@ -111,12 +104,30 @@ function exitGame() {
     gameRunning = false;
     alert("Game exited!");
     startButton.style.display = "block";
+    // Retourner au bot Telegram
+    redirectToTelegram();
 }
 
-// Bouton de démarrage
-startButton.addEventListener("click", startGame);
+function endGame(message) {
+    clearInterval(gameInterval);
+    gameRunning = false;
+    alert(message);
+    // Retourner au bot Telegram après 2 secondes
+    setTimeout(() => {
+        redirectToTelegram();
+    }, 2000);
+}
 
-// Bouton de toggle plein écran
+function redirectToTelegram() {
+    // Rediriger vers le bot Telegram via un lien profond.
+    // Remplacez 'YourBotUsername' par le nom de votre bot sans '@'
+    window.location.href = "tg://resolve?domain=thebig001lkBot";
+}
+
+startButton.addEventListener("click", startGame);
+exitButton.addEventListener("click", exitGame);
+
+// Bouton pour toggle le mode plein écran
 toggleFSButton.addEventListener("click", () => {
     if (!document.fullscreenElement) {
         document.documentElement.requestFullscreen().catch((err) => {
@@ -126,6 +137,3 @@ toggleFSButton.addEventListener("click", () => {
         document.exitFullscreen();
     }
 });
-
-// Bouton exit
-exitButton.addEventListener("click", exitGame);
