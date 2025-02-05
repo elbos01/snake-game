@@ -7,8 +7,13 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Score affiché en haut -->
+    <div id="scoreDisplay">Score: 0</div>
+
+    <!-- Zone de jeu -->
     <canvas id="gameCanvas" width="400" height="400"></canvas>
 
+    <!-- Contrôles sous forme de manette (disposition type clavier ZSQD) -->
     <div id="controls">
         <div class="control-row" id="row-up">
             <button id="up" class="control-button">▲</button>
@@ -22,6 +27,9 @@
             <button id="down" class="control-button">▼</button>
         </div>
     </div>
+
+    <!-- Bouton pour démarrer le jeu -->
+    <button id="startButton" class="start-button">Start Game</button>
 
     <script src="script.js"></script>
 </body>

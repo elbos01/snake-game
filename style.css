@@ -9,6 +9,11 @@ body {
     font-family: Arial, sans-serif;
 }
 
+#scoreDisplay {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
 #gameCanvas {
     background-color: #000;
     border: 5px solid #333;
@@ -52,6 +57,27 @@ body {
 }
 
 .empty-space {
-    width: 70px; /* même largeur que les boutons */
+    width: 70px;
     height: 70px;
+}
+
+.start-button {
+    width: 150px;
+    height: 50px;
+    font-size: 20px;
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.start-button:hover {
+    background-color: #1976D2;
+}
+
+.start-button:active {
+    background-color: #1565C0;
 }
