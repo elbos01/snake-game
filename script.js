@@ -16,16 +16,16 @@ document.addEventListener("keydown", (e) => {
     handleDirectionChange(e.key);
 });
 
-document.getElementById("up").addEventListener("click", () => handleDirectionChange("ArrowUp"));
-document.getElementById("down").addEventListener("click", () => handleDirectionChange("ArrowDown"));
-document.getElementById("left").addEventListener("click", () => handleDirectionChange("ArrowLeft"));
-document.getElementById("right").addEventListener("click", () => handleDirectionChange("ArrowRight"));
+document.getElementById("up").addEventListener("click", () => handleDirectionChange("z"));
+document.getElementById("down").addEventListener("click", () => handleDirectionChange("s"));
+document.getElementById("left").addEventListener("click", () => handleDirectionChange("q"));
+document.getElementById("right").addEventListener("click", () => handleDirectionChange("d"));
 
 function handleDirectionChange(key) {
-    if (key === "ArrowUp" && direction !== "down") direction = "up";
-    if (key === "ArrowDown" && direction !== "up") direction = "down";
-    if (key === "ArrowLeft" && direction !== "right") direction = "left";
-    if (key === "ArrowRight" && direction !== "left") direction = "right";
+    if ((key === "ArrowUp" || key === "z") && direction !== "down") direction = "up";
+    if ((key === "ArrowDown" || key === "s") && direction !== "up") direction = "down";
+    if ((key === "ArrowLeft" || key === "q") && direction !== "right") direction = "left";
+    if ((key === "ArrowRight" || key === "d") && direction !== "left") direction = "right";
 }
 
 function draw() {
@@ -62,7 +62,7 @@ function draw() {
     }
 }
 
-setInterval(draw, 100);
+setInterval(draw, 150); // Vitesse réduite du snake
 
 // Style des boutons de contrôle
 const controlButtons = document.querySelectorAll('.control-button');
