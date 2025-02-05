@@ -3,6 +3,7 @@ const ctx = canvas.getContext("2d");
 const scoreDisplay = document.getElementById("scoreDisplay");
 const startButton = document.getElementById("startButton");
 const toggleFSButton = document.getElementById("toggleFS");
+const exitButton = document.getElementById("exitButton");
 
 const box = 20;
 let snake = [{ x: 200, y: 200 }];
@@ -11,6 +12,7 @@ let food = generateFood();
 let score = 0;
 let gameInterval = null;
 let gameRunning = false;
+const maxFoods = 10; // Le snake s'arrête après 10 nourritures
 
 function generateFood() {
     return {
@@ -19,7 +21,8 @@ function generateFood() {
     };
 }
 
-// Gestion des touches (clavier et boutons) - ici on utilise z,s,q,d pour clavier azerty ou Arrow keys.
+// Gestion des touches (clavier et boutons)
+// Ici, on utilise z,s,q,d pour le clavier azerty ainsi que les flèches standards
 function handleDirectionChange(key) {
     if ((key === "ArrowUp" || key === "z") && direction !== "down") direction = "up";
     if ((key === "ArrowDown" || key === "s") && direction !== "up") direction = "down";
@@ -48,14 +51,14 @@ function draw() {
     ctx.fillStyle = "red";
     ctx.fillRect(food.x, food.y, box, box);
 
-    // Calcul de la nouvelle tête avec effet "wrap-around"
+    // Calcul de la nouvelle tête avec effet wrap-around
     let head = { ...snake[0] };
     if (direction === "up") head.y -= box;
     if (direction === "down") head.y += box;
     if (direction === "left") head.x -= box;
     if (direction === "right") head.x += box;
 
-    // Wrap-around (si dépassement d'un bord, réapparaît de l'autre côté)
+    // Wrap-around
     if (head.x < 0) head.x = canvas.width - box;
     if (head.x >= canvas.width) head.x = 0;
     if (head.y < 0) head.y = canvas.height - box;
@@ -72,11 +75,20 @@ function draw() {
 
     snake.unshift(head);
 
-    // Si la nourriture est mangée
+    // Si le snake mange la nourriture
     if (head.x === food.x && head.y === food.y) {
         score++;
         scoreDisplay.textContent = "Score: " + score;
         food = generateFood();
+        // Si le snake a mangé 10 nourritures, arrêter le jeu
+        if (score >= maxFoods) {
+            clearInterval(gameInterval);
+            gameRunning = false;
+            alert("Snake is full, come tomorrow!");
+            startButton.style.display = "block";
+            // Ici, vous pouvez envoyer le score à Telegram pour convertir en dollars.
+            return;
+        }
     } else {
         snake.pop();
     }
@@ -94,9 +106,17 @@ function startGame() {
     gameInterval = setInterval(draw, 150);
 }
 
+function exitGame() {
+    clearInterval(gameInterval);
+    gameRunning = false;
+    alert("Game exited!");
+    startButton.style.display = "block";
+}
+
+// Bouton de démarrage
 startButton.addEventListener("click", startGame);
 
-// Bouton pour toggle le mode plein écran
+// Bouton de toggle plein écran
 toggleFSButton.addEventListener("click", () => {
     if (!document.fullscreenElement) {
         document.documentElement.requestFullscreen().catch((err) => {
@@ -106,3 +126,6 @@ toggleFSButton.addEventListener("click", () => {
         document.exitFullscreen();
     }
 });
+
+// Bouton exit
+exitButton.addEventListener("click", exitGame);
