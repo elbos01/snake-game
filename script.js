@@ -2,6 +2,7 @@ const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 const scoreDisplay = document.getElementById("scoreDisplay");
 const startButton = document.getElementById("startButton");
+const toggleFSButton = document.getElementById("toggleFS");
 
 const box = 20;
 let snake = [{ x: 200, y: 200 }];
@@ -18,7 +19,7 @@ function generateFood() {
     };
 }
 
-// Gestion des touches clavier et des boutons (on utilise ici les touches Z,S,Q,D pour émuler un clavier AZERTY)
+// Gestion des touches (clavier et boutons) - ici on utilise z,s,q,d pour clavier azerty ou Arrow keys.
 function handleDirectionChange(key) {
     if ((key === "ArrowUp" || key === "z") && direction !== "down") direction = "up";
     if ((key === "ArrowDown" || key === "s") && direction !== "up") direction = "down";
@@ -47,26 +48,31 @@ function draw() {
     ctx.fillStyle = "red";
     ctx.fillRect(food.x, food.y, box, box);
 
-    // Calculer la nouvelle tête
+    // Calcul de la nouvelle tête avec effet "wrap-around"
     let head = { ...snake[0] };
     if (direction === "up") head.y -= box;
     if (direction === "down") head.y += box;
     if (direction === "left") head.x -= box;
     if (direction === "right") head.x += box;
 
-    // Vérifier les collisions (murs ou auto-collision)
-    if (head.x < 0 || head.y < 0 || head.x >= canvas.width || head.y >= canvas.height ||
-            snake.some(part => part.x === head.x && part.y === head.y)) {
+    // Wrap-around (si dépassement d'un bord, réapparaît de l'autre côté)
+    if (head.x < 0) head.x = canvas.width - box;
+    if (head.x >= canvas.width) head.x = 0;
+    if (head.y < 0) head.y = canvas.height - box;
+    if (head.y >= canvas.height) head.y = 0;
+
+    // Vérifier auto-collision (sans collision murale grâce au wrap-around)
+    if (snake.some((part, index) => index !== 0 && part.x === head.x && part.y === head.y)) {
         clearInterval(gameInterval);
         gameRunning = false;
         alert("Game Over! Score: " + score);
-        startButton.style.display = "block"; // Afficher le bouton de démarrage pour rejouer
+        startButton.style.display = "block";
         return;
     }
 
     snake.unshift(head);
 
-    // Vérifier si la nourriture est mangée
+    // Si la nourriture est mangée
     if (head.x === food.x && head.y === food.y) {
         score++;
         scoreDisplay.textContent = "Score: " + score;
@@ -77,7 +83,7 @@ function draw() {
 }
 
 function startGame() {
-    // Réinitialiser l'état du jeu
+    // Réinitialisation du jeu
     snake = [{ x: 200, y: 200 }];
     direction = "right";
     food = generateFood();
@@ -85,7 +91,18 @@ function startGame() {
     scoreDisplay.textContent = "Score: " + score;
     gameRunning = true;
     startButton.style.display = "none";
-    gameInterval = setInterval(draw, 150); // Vitesse réduite (150ms par frame)
+    gameInterval = setInterval(draw, 150);
 }
 
 startButton.addEventListener("click", startGame);
+
+// Bouton pour toggle le mode plein écran
+toggleFSButton.addEventListener("click", () => {
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch((err) => {
+            alert(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+        });
+    } else {
+        document.exitFullscreen();
+    }
+});
